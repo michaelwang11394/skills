@@ -1,0 +1,21 @@
+{
+  "name": "heygen-skills",
+  "version": "1.0.0",
+  "description": "Claude Code skills knowledge base for HeyGen AI avatar video creation API",
+  "keywords": [
+    "heygen",
+    "video",
+    "avatar",
+    "ai",
+    "api",
+    "text-to-video",
+    "claude-code",
+    "skills"
+  ],
+  "author": "James Russo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesrusso/heygen-skills"
+  }
+}
