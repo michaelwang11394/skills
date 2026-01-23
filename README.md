@@ -21,13 +21,13 @@ Install using the [add-skill](https://github.com/vercel-labs/add-skill) CLI:
 
 ```bash
 # Install to Claude Code globally
-npx add-skill jamesrusso/heygen-skills -a claude-code -g
+npx add-skill heygen-com/heygen-skills -a claude-code -g
 
 # Or install to current project only
-npx add-skill jamesrusso/heygen-skills -a claude-code
+npx add-skill heygen-com/heygen-skills -a claude-code
 
 # List available skills first
-npx add-skill jamesrusso/heygen-skills --list
+npx add-skill heygen-com/heygen-skills --list
 ```
 
 This works with Claude Code, Cursor, Codex, and [13 other agents](https://github.com/vercel-labs/add-skill#available-agents).
