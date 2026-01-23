@@ -19,6 +19,15 @@ Streaming avatars provide:
 
 ## Creating a Streaming Session
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `avatar_id` | string | ✓ | Avatar to use for streaming |
+| `voice_id` | string | ✓ | Voice for TTS responses |
+| `quality` | string | | `"low"`, `"medium"`, or `"high"` |
+| `video_encoding` | string | | `"H264"` or `"VP8"` |
+
 ### curl
 
 ```bash
@@ -36,8 +45,8 @@ curl -X POST "https://api.heygen.com/v1/streaming.new" \
 
 ```typescript
 interface StreamingSessionRequest {
-  avatar_id: string;
-  voice_id: string;
+  avatar_id: string;                           // Required
+  voice_id: string;                            // Required
   quality?: "low" | "medium" | "high";
   video_encoding?: "H264" | "VP8";
 }
@@ -115,6 +124,15 @@ def create_streaming_session(config: dict) -> dict:
 
 Make the avatar speak in real-time:
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `session_id` | string | ✓ | Active streaming session ID |
+| `text` | string | ✓ | Text for avatar to speak |
+| `task_type` | string | ✓ | `"talk"` or `"repeat"` |
+| `task_mode` | string | | `"sync"` or `"async"` |
+
 ### curl
 
 ```bash
@@ -132,9 +150,9 @@ curl -X POST "https://api.heygen.com/v1/streaming.task" \
 
 ```typescript
 interface StreamingTaskRequest {
-  session_id: string;
-  text: string;
-  task_type: "talk" | "repeat";
+  session_id: string;                          // Required
+  text: string;                                // Required
+  task_type: "talk" | "repeat";                // Required
   task_mode?: "sync" | "async";
 }
 

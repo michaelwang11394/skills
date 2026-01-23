@@ -632,12 +632,45 @@ async function generateWithAvatarDefaultVoice(
 
 ## Selecting the Right Avatar
 
-Consider these factors when choosing an avatar:
+### Avatar Categories
 
-1. **Target audience** - Match avatar demographics to your audience
-2. **Content type** - Professional for business, casual for social
-3. **Use default voice when available** - Simplest path to good results
-4. **Style** - closeUp for personal content, normal for presentations
+HeyGen avatars fall into distinct categories. Match the category to your use case:
+
+| Category | Examples | Best For |
+|----------|----------|----------|
+| **Business/Professional** | Josh, Angela, Wayne | Corporate videos, product demos, training |
+| **Casual/Friendly** | Lily, various lifestyle avatars | Social media, informal content |
+| **Themed/Seasonal** | Holiday-themed, costume avatars | Specific campaigns, seasonal content |
+| **Expressive** | Avatars with "expressive" in name | Engaging storytelling, dynamic content |
+
+### Selection Guidelines
+
+**For business/professional content:**
+- Choose avatars with neutral attire (business casual or formal)
+- Avoid themed or seasonal avatars (holiday costumes, casual clothing)
+- Preview the avatar to verify professional appearance
+- Consider your audience demographics when selecting gender and appearance
+
+**For casual/social content:**
+- More flexibility in avatar choice
+- Themed avatars can work for specific campaigns
+- Match avatar energy to content tone
+
+### Common Mistakes to Avoid
+
+1. **Using themed avatars for business content** - A holiday-themed avatar looks unprofessional in a product demo
+2. **Not previewing before generation** - Always `open <preview_url>` to verify appearance
+3. **Ignoring avatar style** - A `circle` style avatar may not work for full-screen presentations
+4. **Mismatched voice gender** - Always use the avatar's `default_voice_id` or match genders manually
+
+### Selection Checklist
+
+Before generating a video:
+- [ ] Previewed avatar image/video in browser
+- [ ] Avatar appearance matches content tone (professional vs casual)
+- [ ] Avatar style (`normal`, `closeUp`, `circle`) fits the video format
+- [ ] Voice gender matches avatar gender
+- [ ] Using `default_voice_id` when available
 
 ## Helper Functions
 

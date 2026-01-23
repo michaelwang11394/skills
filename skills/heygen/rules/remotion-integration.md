@@ -216,6 +216,7 @@ Only use when you need to see content *behind* the avatar (e.g., avatar overlaid
 
 ```typescript
 // Use /v1/video.webm endpoint for transparent background
+// Note: Different structure than /v2/video/generate
 const response = await fetch("https://api.heygen.com/v1/video.webm", {
   method: "POST",
   headers: {
@@ -223,11 +224,10 @@ const response = await fetch("https://api.heygen.com/v1/video.webm", {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    video_inputs: [{
-      character: { type: "avatar", avatar_id: avatarId, avatar_style: style },
-      voice: { type: "text", input_text: script, voice_id: voiceId },
-      // No background - output is transparent
-    }],
+    avatar_pose_id: avatarPoseId,  // Required: avatar pose ID
+    avatar_style: "normal",        // Required: "normal" or "closeUp" only
+    input_text: script,            // Required (with voice_id)
+    voice_id: voiceId,             // Required (with input_text)
     dimension: { width: 1920, height: 1080 },
   }),
 });

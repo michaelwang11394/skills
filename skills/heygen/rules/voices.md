@@ -190,15 +190,54 @@ const videoConfig = {
 };
 ```
 
-## Adding Pauses with SSML
+## Adding Pauses with Break Tags
 
-For voices that support pauses, use SSML tags:
+HeyGen supports SSML-style `<break>` tags to add pauses in scripts.
+
+### Break Tag Format
+
+```
+<break time="Xs"/>
+```
+
+Where `X` is the duration in seconds (e.g., `1s`, `1.5s`, `0.5s`).
+
+### Requirements
+
+| Rule | Example |
+|------|---------|
+| Use seconds with "s" suffix | `<break time="1.5s"/>` ✓ |
+| Must have space before tag | `word <break time="1s"/>` ✓ |
+| Must have space after tag | `<break time="1s"/> word` ✓ |
+| Self-closing tag | `<break time="1s"/>` ✓ |
+
+**Incorrect:** `word<break time="1s"/>word` (no spaces)
+**Correct:** `word <break time="1s"/> word`
+
+### Examples
+
+```typescript
+// Single pause
+const script1 = "Hello and welcome. <break time=\"1s\"/> Let me introduce our product.";
+
+// Multiple pauses
+const script2 = "First point. <break time=\"1.5s\"/> Second point. <break time=\"1s\"/> Third point.";
+
+// Pause at start (dramatic opening)
+const script3 = "<break time=\"0.5s\"/> Welcome to our presentation.";
+
+// Longer pause for emphasis
+const script4 = "And the winner is... <break time=\"2s\"/> You!";
+```
+
+### Full Example
 
 ```typescript
 const scriptWithPauses = `
-Hello and welcome. <break time="1s"/>
-Let me introduce our new product. <break time="500ms"/>
-It's amazing!
+Welcome to our product demo. <break time="1s"/>
+Today I'll show you three key features. <break time="0.5s"/>
+First, let's look at the dashboard. <break time="1.5s"/>
+As you can see, it's incredibly intuitive.
 `;
 
 const videoConfig = {
@@ -218,6 +257,24 @@ const videoConfig = {
   ],
 };
 ```
+
+### Consecutive Breaks
+
+Multiple consecutive break tags are automatically combined:
+
+```typescript
+// These two breaks:
+"Hello <break time=\"1s\"/> <break time=\"0.5s\"/> world"
+
+// Are treated as a single 1.5s pause
+```
+
+### Best Practices
+
+1. **Use for emphasis** - Add pauses before important points
+2. **Keep pauses reasonable** - 0.5s to 2s is typical; longer feels unnatural
+3. **Match natural speech** - Add pauses where a human would breathe or pause
+4. **Test the output** - Listen to generated audio to verify timing feels right
 
 ## Using Custom Audio Instead of TTS
 

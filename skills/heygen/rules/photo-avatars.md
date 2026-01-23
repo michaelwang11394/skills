@@ -279,23 +279,71 @@ For best results, use photos that meet these criteria:
 5. **Clarity** - Sharp, in focus
 6. **Angle** - Straight-on or slight angle
 
-## Generating AI Photos
+## Generating AI Photo Avatars
 
-Generate synthetic photo avatars:
+Generate synthetic photo avatars from text descriptions.
+
+> **IMPORTANT: All 8 fields are REQUIRED.** The API will reject requests missing any field.
+> You cannot simply provide a text description - you MUST specify each enum field explicitly.
+> When a user asks to "generate an AI avatar of a professional man", you need to ask for or select values for ALL fields below.
+
+### Required Fields (ALL must be provided)
+
+| Field | Type | Allowed Values |
+|-------|------|----------------|
+| `name` | string | Name for the generated avatar |
+| `age` | enum | `"Young Adult"`, `"Early Middle Age"`, `"Late Middle Age"`, `"Senior"`, `"Unspecified"` |
+| `gender` | enum | `"Woman"`, `"Man"`, `"Unspecified"` |
+| `ethnicity` | enum | `"White"`, `"Black"`, `"Asian American"`, `"East Asian"`, `"South East Asian"`, `"South Asian"`, `"Middle Eastern"`, `"Pacific"`, `"Hispanic"`, `"Unspecified"` |
+| `orientation` | enum | `"square"`, `"horizontal"`, `"vertical"` |
+| `pose` | enum | `"half_body"`, `"close_up"`, `"full_body"` |
+| `style` | enum | `"Realistic"`, `"Pixar"`, `"Cinematic"`, `"Vintage"`, `"Noir"`, `"Cyberpunk"`, `"Unspecified"` |
+| `appearance` | string | Text prompt describing appearance (clothing, mood, lighting, etc). Max 1000 chars |
+
+### curl Example
+
+```bash
+curl -X POST "https://api.heygen.com/v2/photo_avatar/photo/generate" \
+  -H "X-Api-Key: $HEYGEN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Sarah Product Demo",
+    "age": "Young Adult",
+    "gender": "Woman",
+    "ethnicity": "White",
+    "orientation": "horizontal",
+    "pose": "half_body",
+    "style": "Realistic",
+    "appearance": "Professional woman with a friendly smile, wearing a navy blue blazer over a white blouse, soft studio lighting, clean neutral background"
+  }'
+```
+
+### TypeScript
 
 ```typescript
-interface GeneratePhotoRequest {
-  appearance: string;
-  age?: string;
-  gender?: "male" | "female";
-  ethnicity?: string;
-  orientation?: string;
-  pose?: string;
-  style?: string;
+// All fields are REQUIRED - the API will reject requests with missing fields
+interface GeneratePhotoAvatarRequest {
+  name: string;                    // Name for the avatar
+  age: "Young Adult" | "Early Middle Age" | "Late Middle Age" | "Senior" | "Unspecified";
+  gender: "Woman" | "Man" | "Unspecified";
+  ethnicity: "White" | "Black" | "Asian American" | "East Asian" | "South East Asian" | "South Asian" | "Middle Eastern" | "Pacific" | "Hispanic" | "Unspecified";
+  orientation: "square" | "horizontal" | "vertical";
+  pose: "half_body" | "close_up" | "full_body";
+  style: "Realistic" | "Pixar" | "Cinematic" | "Vintage" | "Noir" | "Cyberpunk" | "Unspecified";
+  appearance: string;              // Max 1000 characters
+  callback_url?: string;           // Optional: webhook for completion notification
+  callback_id?: string;            // Optional: custom ID for tracking
+}
+
+interface GeneratePhotoAvatarResponse {
+  error: string | null;
+  data: {
+    generation_id: string;
+  };
 }
 
 async function generatePhotoAvatar(
-  config: GeneratePhotoRequest
+  config: GeneratePhotoAvatarRequest
 ): Promise<string> {
   const response = await fetch(
     "https://api.heygen.com/v2/photo_avatar/photo/generate",
@@ -309,12 +357,47 @@ async function generatePhotoAvatar(
     }
   );
 
-  const json = await response.json();
+  const json: GeneratePhotoAvatarResponse = await response.json();
+
+  if (json.error) {
+    throw new Error(`Photo avatar generation failed: ${json.error}`);
+  }
+
   return json.data.generation_id;
 }
+```
 
-// Check generation status
-async function checkPhotoGeneration(generationId: string) {
+### Example: Generate Professional Avatar
+
+```typescript
+const generationId = await generatePhotoAvatar({
+  name: "Tech Demo Presenter",
+  age: "Early Middle Age",
+  gender: "Man",
+  ethnicity: "East Asian",
+  orientation: "horizontal",
+  pose: "half_body",
+  style: "Realistic",
+  appearance: "Professional man in a modern office setting, wearing a dark gray suit with no tie, confident and approachable expression, soft natural lighting from a window, clean minimalist background"
+});
+
+console.log(`Generation started: ${generationId}`);
+// Save generationId to poll for status later
+```
+
+### Check Generation Status
+
+```typescript
+interface PhotoGenerationStatus {
+  error: string | null;
+  data: {
+    status: "pending" | "processing" | "completed" | "failed";
+    image_url?: string;        // Available when completed
+    image_key?: string;        // S3 key for use in video generation
+  };
+}
+
+async function checkPhotoGeneration(generationId: string): Promise<PhotoGenerationStatus> {
   const response = await fetch(
     `https://api.heygen.com/v2/photo_avatar/generation/${generationId}`,
     { headers: { "X-Api-Key": process.env.HEYGEN_API_KEY! } }
@@ -322,7 +405,64 @@ async function checkPhotoGeneration(generationId: string) {
 
   return response.json();
 }
+
+// Poll for completion
+async function waitForPhotoGeneration(generationId: string): Promise<string> {
+  const maxAttempts = 60;
+  const pollIntervalMs = 5000; // 5 seconds
+
+  for (let i = 0; i < maxAttempts; i++) {
+    const status = await checkPhotoGeneration(generationId);
+
+    if (status.error) {
+      throw new Error(status.error);
+    }
+
+    if (status.data.status === "completed") {
+      return status.data.image_key!;
+    }
+
+    if (status.data.status === "failed") {
+      throw new Error("Photo generation failed");
+    }
+
+    console.log(`Status: ${status.data.status}, waiting...`);
+    await new Promise(r => setTimeout(r, pollIntervalMs));
+  }
+
+  throw new Error("Photo generation timed out");
+}
 ```
+
+### Pre-Generation Checklist
+
+Before calling the API, ensure you have values for ALL fields:
+
+| # | Field | Question to Ask / Default |
+|---|-------|---------------------------|
+| 1 | `name` | What should we call this avatar? |
+| 2 | `age` | Young Adult / Early Middle Age / Late Middle Age / Senior? |
+| 3 | `gender` | Woman / Man? |
+| 4 | `ethnicity` | Which ethnicity? (see enum values above) |
+| 5 | `orientation` | horizontal (landscape) / vertical (portrait) / square? |
+| 6 | `pose` | half_body (recommended) / close_up / full_body? |
+| 7 | `style` | Realistic (recommended) / Cinematic / other? |
+| 8 | `appearance` | Describe clothing, expression, lighting, background |
+
+**If the user only provides a vague request** like "create a professional looking man", ask them to specify the missing fields OR make reasonable defaults (e.g., "Early Middle Age", "Realistic" style, "half_body" pose, "horizontal" orientation).
+
+### Appearance Prompt Tips
+
+The `appearance` field is a text prompt - be descriptive:
+
+**Good prompts:**
+- "Professional woman with shoulder-length brown hair, wearing a light blue button-down shirt, warm friendly smile, soft studio lighting, clean white background"
+- "Young man with short black hair, casual tech startup style, wearing a dark hoodie, confident expression, modern office background with plants"
+
+**Avoid:**
+- Vague descriptions: "a nice person"
+- Conflicting attributes
+- Requesting specific real people
 
 ## Complete Workflow: Photo to Video
 

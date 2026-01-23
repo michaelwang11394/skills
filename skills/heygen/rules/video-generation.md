@@ -48,36 +48,92 @@ curl -X POST "https://api.heygen.com/v2/video/generate" \
   }'
 ```
 
+## Request Fields
+
+### Top-Level Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `video_inputs` | array | ✓ | Array of 1-50 video input objects |
+| `dimension` | object | | Video dimensions `{width, height}` |
+| `title` | string | | Video name for organization |
+| `test` | boolean | | Test mode (watermarked, no credits) |
+| `caption` | boolean | | Enable auto-captions |
+| `callback_id` | string | | Custom ID for webhook tracking |
+| `callback_url` | string | | URL for completion notification |
+| `folder_id` | string | | Storage folder ID |
+
+### video_inputs[].character Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `type` | string | ✓ | `"avatar"` or `"talking_photo"` |
+| `avatar_id` | string | ✓* | Avatar ID (*required when type is "avatar") |
+| `talking_photo_id` | string | ✓* | Photo ID (*required when type is "talking_photo") |
+| `avatar_style` | string | | `"normal"`, `"closeUp"`, or `"circle"` |
+| `scale` | number | | Avatar scale factor |
+| `offset` | object | | Position offset `{x, y}` |
+
+### video_inputs[].voice Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `type` | string | ✓ | `"text"`, `"audio"`, or `"silence"` |
+| `voice_id` | string | ✓* | Voice ID (*required when type is "text") |
+| `input_text` | string | ✓* | Script text (*required when type is "text") |
+| `audio_url` | string | ✓* | Audio URL (*required when type is "audio") |
+| `duration` | number | ✓* | Duration in seconds (*required when type is "silence") |
+| `speed` | number | | Speech speed 0.5-2.0 (default 1.0) |
+| `pitch` | number | | Voice pitch -20 to 20 (default 0) |
+
+### video_inputs[].background Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `type` | string | | `"color"`, `"image"`, or `"video"` |
+| `value` | string | | Hex color (when type is "color") |
+| `url` | string | | Image/video URL (when type is "image"/"video") |
+| `fit` | string | | `"cover"` or `"contain"` |
+
 ### TypeScript
 
 ```typescript
+// Required fields have no '?' - optional fields have '?'
 interface VideoInput {
   character: {
-    type: "avatar" | "talking_photo";
-    avatar_id?: string;
+    type: "avatar" | "talking_photo";           // Required
+    avatar_id?: string;                         // Required when type="avatar"
+    talking_photo_id?: string;                  // Required when type="talking_photo"
     avatar_style?: "normal" | "closeUp" | "circle";
-    talking_photo_id?: string;
+    scale?: number;
+    offset?: { x: number; y: number };
   };
   voice: {
-    type: "text" | "audio";
-    input_text?: string;
-    voice_id?: string;
-    audio_url?: string;
+    type: "text" | "audio" | "silence";         // Required
+    input_text?: string;                        // Required when type="text"
+    voice_id?: string;                          // Required when type="text"
+    audio_url?: string;                         // Required when type="audio"
+    duration?: number;                          // Required when type="silence"
     speed?: number;
     pitch?: number;
   };
   background?: {
-    type: "color" | "image" | "video";
+    type?: "color" | "image" | "video";
     value?: string;
     url?: string;
+    fit?: "cover" | "contain";
   };
 }
 
 interface VideoGenerateRequest {
-  video_inputs: VideoInput[];
+  video_inputs: VideoInput[];                   // Required
   dimension?: { width: number; height: number };
   test?: boolean;
   title?: string;
+  caption?: boolean;
+  callback_id?: string;
+  callback_url?: string;
+  folder_id?: string;
 }
 
 interface VideoGenerateResponse {
@@ -389,6 +445,20 @@ async function generateVideoSafe(config: VideoGenerateRequest) {
 | Team | ~3,000 |
 | Enterprise | ~5,000+ |
 
+## Adding Pauses to Scripts
+
+Use `<break>` tags to add pauses in your script:
+
+```typescript
+const script = "Welcome to our demo. <break time=\"1s\"/> Let me show you the features.";
+```
+
+**Format:** `<break time="Xs"/>` where X is seconds (e.g., `1s`, `1.5s`, `0.5s`)
+
+**Important:** Break tags must have spaces before and after them.
+
+See [voices.md](voices.md) for detailed break tag documentation.
+
 ## Test Mode
 
 Use test mode during development:
@@ -525,6 +595,21 @@ Use WebM **only when you need transparency** - i.e., when the avatar should be o
 - Avatar floating over video background
 - True alpha-channel compositing
 
+### WebM Request Fields
+
+**Note:** The WebM endpoint (`/v1/video.webm`) uses a different structure than `/v2/video/generate`.
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `avatar_pose_id` | string | ✓ | Avatar pose ID (from avatar details) |
+| `avatar_style` | string | ✓ | `"normal"` or `"closeUp"` only (no circle) |
+| `input_text` | string | ✓* | Script text (*required if not using input_audio) |
+| `voice_id` | string | ✓* | Voice ID (*required with input_text) |
+| `input_audio` | string | ✓* | Audio URL (*required if not using input_text) |
+| `dimension` | object | | `{width, height}` (default: 1280x720) |
+
+**Either** (`input_text` + `voice_id`) **OR** `input_audio` must be provided, but not both.
+
 ### curl
 
 ```bash
@@ -532,20 +617,10 @@ curl -X POST "https://api.heygen.com/v1/video.webm" \
   -H "X-Api-Key: $HEYGEN_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "video_inputs": [
-      {
-        "character": {
-          "type": "avatar",
-          "avatar_id": "josh_lite3_20230714",
-          "avatar_style": "normal"
-        },
-        "voice": {
-          "type": "text",
-          "input_text": "Hello! This video has a transparent background.",
-          "voice_id": "1bd001e7e50f421d891986aad5158bc8"
-        }
-      }
-    ],
+    "avatar_pose_id": "josh_lite3_20230714",
+    "avatar_style": "normal",
+    "input_text": "Hello! This video has a transparent background.",
+    "voice_id": "1bd001e7e50f421d891986aad5158bc8",
     "dimension": {
       "width": 1920,
       "height": 1080
@@ -556,9 +631,18 @@ curl -X POST "https://api.heygen.com/v1/video.webm" \
 ### TypeScript
 
 ```typescript
+interface WebMVideoRequest {
+  avatar_pose_id: string;                      // Required
+  avatar_style: "normal" | "closeUp";          // Required (no circle support)
+  input_text?: string;                         // Required if not using input_audio
+  voice_id?: string;                           // Required with input_text
+  input_audio?: string;                        // Required if not using input_text
+  dimension?: { width: number; height: number };
+}
+
 async function generateTransparentVideo(
   script: string,
-  avatarId: string,
+  avatarPoseId: string,
   voiceId: string
 ): Promise<string> {
   const response = await fetch("https://api.heygen.com/v1/video.webm", {
@@ -568,19 +652,10 @@ async function generateTransparentVideo(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      video_inputs: [{
-        character: {
-          type: "avatar",
-          avatar_id: avatarId,
-          avatar_style: "normal", // or "closeUp", "circle"
-        },
-        voice: {
-          type: "text",
-          input_text: script,
-          voice_id: voiceId,
-        },
-        // No background needed - output is transparent
-      }],
+      avatar_pose_id: avatarPoseId,            // Required
+      avatar_style: "normal",                  // Required: "normal" or "closeUp"
+      input_text: script,                      // Required (with voice_id)
+      voice_id: voiceId,                       // Required (with input_text)
       dimension: { width: 1920, height: 1080 },
     }),
   });
@@ -611,14 +686,10 @@ const videoId = await fetch("https://api.heygen.com/v1/video.webm", {
   method: "POST",
   headers: { "X-Api-Key": apiKey, "Content-Type": "application/json" },
   body: JSON.stringify({
-    video_inputs: [{
-      character: {
-        type: "avatar",
-        avatar_id: avatarId,
-        avatar_style: "closeUp", // or "normal" - circle NOT supported for WebM
-      },
-      voice: { type: "text", input_text: script, voice_id: voiceId },
-    }],
+    avatar_pose_id: avatarPoseId,              // Required
+    avatar_style: "closeUp",                   // Required: "normal" or "closeUp" only
+    input_text: script,                        // Required (with voice_id)
+    voice_id: voiceId,                         // Required (with input_text)
     dimension: { width: 1920, height: 1080 },
   }),
 }).then(r => r.json()).then(d => d.data.video_id);

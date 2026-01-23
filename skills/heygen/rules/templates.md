@@ -145,6 +145,18 @@ async function getTemplate(templateId: string): Promise<Template> {
 
 ## Generating Video from Template
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `variables` | object | ✓ | Key-value pairs matching template variables |
+| `test` | boolean | | Test mode (watermarked, no credits) |
+| `title` | string | | Video name for organization |
+| `callback_id` | string | | Custom ID for webhook tracking |
+| `callback_url` | string | | URL for completion notification |
+
+**Note:** The `variables` object keys must match the template's defined variable names. Check template details to see which variables are defined.
+
 ### curl
 
 ```bash
@@ -165,9 +177,11 @@ curl -X POST "https://api.heygen.com/v2/template/{template_id}/generate" \
 
 ```typescript
 interface TemplateGenerateRequest {
+  variables: Record<string, string>;           // Required
   test?: boolean;
-  variables: Record<string, string>;
   title?: string;
+  callback_id?: string;
+  callback_url?: string;
 }
 
 interface TemplateGenerateResponse {

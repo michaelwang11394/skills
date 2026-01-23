@@ -11,6 +11,21 @@ HeyGen's Video Translation feature allows you to translate and dub existing vide
 
 ## Creating a Translation Job
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `video_url` | string | ✓* | URL of video to translate (*or `video_id`) |
+| `video_id` | string | ✓* | HeyGen video ID (*or `video_url`) |
+| `output_language` | string | ✓ | Target language code (e.g., "es-ES") |
+| `title` | string | | Name for the translated video |
+| `translate_audio_only` | boolean | | Audio only, no lip-sync (faster) |
+| `speaker_num` | number | | Number of speakers in video |
+| `callback_id` | string | | Custom ID for webhook tracking |
+| `callback_url` | string | | URL for completion notification |
+
+**Either** `video_url` **OR** `video_id` must be provided.
+
 ### curl
 
 ```bash
@@ -28,12 +43,14 @@ curl -X POST "https://api.heygen.com/v2/video_translate" \
 
 ```typescript
 interface VideoTranslateRequest {
-  video_url?: string;
-  video_id?: string;
-  output_language: string;
+  video_url?: string;                          // Required (or video_id)
+  video_id?: string;                           // Required (or video_url)
+  output_language: string;                     // Required
   title?: string;
   translate_audio_only?: boolean;
   speaker_num?: number;
+  callback_id?: string;
+  callback_url?: string;
 }
 
 interface VideoTranslateResponse {

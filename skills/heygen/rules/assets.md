@@ -17,6 +17,12 @@ Asset uploads use a two-step process:
 
 ## Getting an Upload URL
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `content_type` | string | ✓ | MIME type of file to upload |
+
 ### curl
 
 ```bash
@@ -29,6 +35,10 @@ curl -X POST "https://api.heygen.com/v1/asset" \
 ### TypeScript
 
 ```typescript
+interface AssetUploadRequest {
+  content_type: string;                        // Required
+}
+
 interface AssetUploadResponse {
   error: null | string;
   data: {

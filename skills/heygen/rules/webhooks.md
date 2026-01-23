@@ -174,6 +174,14 @@ interface VideoFailureEvent {
 
 Configure your webhook URL through the HeyGen dashboard or API:
 
+### Request Fields
+
+| Field | Type | Req | Description |
+|-------|------|:---:|-------------|
+| `url` | string | ✓ | Your webhook endpoint URL |
+| `events` | array | ✓ | Event types to subscribe to |
+| `secret` | string | | Shared secret for signature verification |
+
 ### Via API
 
 ```bash
@@ -190,8 +198,8 @@ curl -X POST "https://api.heygen.com/v1/webhook.add" \
 
 ```typescript
 interface WebhookConfig {
-  url: string;
-  events: string[];
+  url: string;                                 // Required
+  events: string[];                            // Required
   secret?: string;
 }
 
