@@ -38,7 +38,7 @@ Clone and symlink to your Claude skills directory:
 
 ```bash
 # Clone the repository
-git clone https://github.com/jamesrusso/heygen-skills.git
+git clone https://github.com/heygen-com/heygen-skills.git
 
 # Symlink to personal skills (available in all projects)
 ln -s $(pwd)/heygen-skills/skills/heygen ~/.claude/skills/heygen
@@ -53,7 +53,7 @@ ln -s $(pwd)/heygen-skills/skills/heygen .claude/skills/heygen
 Copy the skill directly to your project:
 
 ```bash
-git clone https://github.com/jamesrusso/heygen-skills.git
+git clone https://github.com/heygen-com/heygen-skills.git
 mkdir -p .claude/skills
 cp -r heygen-skills/skills/heygen .claude/skills/
 ```
