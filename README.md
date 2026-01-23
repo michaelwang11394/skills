@@ -21,13 +21,13 @@ Install using the [add-skill](https://github.com/vercel-labs/add-skill) CLI:
 
 ```bash
 # Install to Claude Code globally
-npx add-skill heygen-com/heygen-skills -a claude-code -g
+npx add-skill heygen-com/skills -a claude-code -g
 
 # Or install to current project only
-npx add-skill heygen-com/heygen-skills -a claude-code
+npx add-skill heygen-com/skills -a claude-code
 
 # List available skills first
-npx add-skill heygen-com/heygen-skills --list
+npx add-skill heygen-com/skills --list
 ```
 
 This works with Claude Code, Cursor, Codex, and [13 other agents](https://github.com/vercel-labs/add-skill#available-agents).
@@ -38,14 +38,14 @@ Clone and symlink to your Claude skills directory:
 
 ```bash
 # Clone the repository
-git clone https://github.com/heygen-com/heygen-skills.git
+git clone https://github.com/heygen-com/skills.git
 
 # Symlink to personal skills (available in all projects)
-ln -s $(pwd)/heygen-skills/skills/heygen ~/.claude/skills/heygen
+ln -s $(pwd)/skills/skills/heygen ~/.claude/skills/heygen
 
 # OR symlink to project skills (available in current project only)
 mkdir -p .claude/skills
-ln -s $(pwd)/heygen-skills/skills/heygen .claude/skills/heygen
+ln -s $(pwd)/skills/skills/heygen .claude/skills/heygen
 ```
 
 ### Option 3: Direct Copy
@@ -53,9 +53,9 @@ ln -s $(pwd)/heygen-skills/skills/heygen .claude/skills/heygen
 Copy the skill directly to your project:
 
 ```bash
-git clone https://github.com/heygen-com/heygen-skills.git
+git clone https://github.com/heygen-com/skills.git
 mkdir -p .claude/skills
-cp -r heygen-skills/skills/heygen .claude/skills/
+cp -r skills/skills/heygen .claude/skills/
 ```
 
 ### Verify Installation
