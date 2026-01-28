@@ -1,8 +1,6 @@
 ---
 name: avatars
 description: Listing avatars, avatar styles, and avatar_id selection for HeyGen
-metadata:
-  tags: avatars, avatar-id, styles, listing, selection
 ---
 
 # HeyGen Avatars

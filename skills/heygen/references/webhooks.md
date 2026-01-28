@@ -1,8 +1,6 @@
 ---
 name: webhooks
 description: Registering webhook endpoints and event types for HeyGen
-metadata:
-  tags: webhooks, callbacks, events, notifications
 ---
 
 # Webhooks

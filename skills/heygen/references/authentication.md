@@ -1,8 +1,6 @@
 ---
 name: authentication
 description: API key setup, X-Api-Key header, and authentication patterns for HeyGen
-metadata:
-  tags: authentication, api-key, headers, security
 ---
 
 # HeyGen Authentication

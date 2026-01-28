@@ -1,8 +1,6 @@
 ---
 name: scripts
 description: Writing effective scripts for HeyGen AI avatar videos
-metadata:
-  tags: scripts, writing, pauses, breaks, pacing, speech
 ---
 
 # Writing Scripts for HeyGen Videos

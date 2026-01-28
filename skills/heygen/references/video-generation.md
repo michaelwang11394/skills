@@ -1,11 +1,28 @@
 ---
 name: video-generation
 description: POST /v2/video/generate workflow and multi-scene videos for HeyGen
-metadata:
-  tags: video, generation, v2, scenes, workflow
 ---
 
 # Video Generation
+
+## Table of Contents
+- [Video Output Formats](#video-output-formats)
+- [Basic Video Generation](#basic-video-generation)
+- [Request Fields](#request-fields)
+- [Video Configuration Options](#video-configuration-options)
+- [Multi-Scene Videos](#multi-scene-videos)
+- [Using Different Character Types](#using-different-character-types)
+- [Voice Input Types](#voice-input-types)
+- [Complete Workflow Example](#complete-workflow-example)
+- [Error Handling](#error-handling)
+- [Script Length Limits](#script-length-limits)
+- [Adding Pauses to Scripts](#adding-pauses-to-scripts)
+- [Test Mode](#test-mode)
+- [Production-Ready Workflow](#production-ready-workflow)
+- [Transparent Background Videos (WebM)](#transparent-background-videos-webm)
+- [Best Practices](#best-practices)
+
+---
 
 The `/v2/video/generate` endpoint is the primary way to create AI avatar videos with HeyGen.
 

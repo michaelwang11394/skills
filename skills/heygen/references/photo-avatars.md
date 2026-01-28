@@ -1,8 +1,6 @@
 ---
 name: photo-avatars
 description: Creating avatars from photos (talking photos) for HeyGen
-metadata:
-  tags: photo-avatar, talking-photo, avatar-iv, image-to-video
 ---
 
 # Photo Avatars (Talking Photos)

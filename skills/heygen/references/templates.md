@@ -1,8 +1,6 @@
 ---
 name: templates
 description: Template listing and variable replacement for HeyGen videos
-metadata:
-  tags: templates, variables, personalization, batch
 ---
 
 # Video Templates

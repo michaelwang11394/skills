@@ -1,8 +1,6 @@
 ---
 name: dimensions
 description: Resolution options (720p/1080p) and aspect ratios for HeyGen videos
-metadata:
-  tags: dimensions, resolution, aspect-ratio, 720p, 1080p, portrait, landscape
 ---
 
 # Video Dimensions and Resolution

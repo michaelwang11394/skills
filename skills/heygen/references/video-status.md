@@ -1,8 +1,6 @@
 ---
 name: video-status
 description: Polling patterns, status types, and retrieving download URLs for HeyGen videos
-metadata:
-  tags: video, status, polling, download, webhook
 ---
 
 # Video Status and Polling

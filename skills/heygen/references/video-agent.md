@@ -1,8 +1,6 @@
 ---
 name: video-agent
 description: One-shot prompt video generation with HeyGen Video Agent API
-metadata:
-  tags: video-agent, prompt, ai, automated, one-shot
 ---
 
 # Video Agent API

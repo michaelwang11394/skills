@@ -1,8 +1,6 @@
 ---
 name: voices
 description: Listing voices, locales, speed/pitch configuration for HeyGen
-metadata:
-  tags: voices, voice-id, locales, languages, tts, speech
 ---
 
 # HeyGen Voices

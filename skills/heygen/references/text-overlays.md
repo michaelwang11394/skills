@@ -1,8 +1,6 @@
 ---
 name: text-overlays
 description: Adding text overlays with fonts and positioning to HeyGen videos
-metadata:
-  tags: text, overlays, fonts, positioning, graphics
 ---
 
 # Text Overlays

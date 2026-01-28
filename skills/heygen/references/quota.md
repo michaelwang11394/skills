@@ -1,8 +1,6 @@
 ---
 name: quota
 description: Credit system, usage limits, and checking remaining quota for HeyGen
-metadata:
-  tags: quota, credits, limits, usage, billing
 ---
 
 # HeyGen Quota and Credits

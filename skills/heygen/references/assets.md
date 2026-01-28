@@ -1,8 +1,6 @@
 ---
 name: assets
 description: Uploading images, videos, and audio for use in HeyGen video generation
-metadata:
-  tags: assets, upload, images, audio, video, s3
 ---
 
 # Asset Upload and Management

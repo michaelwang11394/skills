@@ -1,8 +1,6 @@
 ---
 name: video-translation
 description: Translating videos, quality/fast modes, and dubbing for HeyGen
-metadata:
-  tags: translation, dubbing, localization, multi-language
 ---
 
 # Video Translation

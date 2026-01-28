@@ -1,8 +1,6 @@
 ---
 name: streaming-avatars
 description: Real-time interactive avatar sessions for HeyGen
-metadata:
-  tags: streaming, real-time, interactive, websocket, live
 ---
 
 # Streaming Avatars

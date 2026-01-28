@@ -1,8 +1,6 @@
 ---
 name: remotion-integration
 description: Using HeyGen avatar videos in Remotion compositions
-metadata:
-  tags: remotion, integration, workflow, video, composition
 ---
 
 # HeyGen + Remotion Integration

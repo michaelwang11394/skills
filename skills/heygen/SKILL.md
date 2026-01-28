@@ -1,43 +1,54 @@
 ---
-name: heygen-best-practices
-description: Best practices for HeyGen - AI avatar video creation API
-metadata:
-  tags: heygen, video, avatar, ai, api, text-to-video
+name: heygen
+description: |
+  HeyGen AI avatar video creation API. Use when: (1) Generating AI avatar videos with /v2/video/generate, (2) Using Video Agent for one-shot prompt-to-video generation, (3) Working with HeyGen avatars, voices, backgrounds, or captions, (4) Creating transparent WebM videos for compositing, (5) Polling video status or handling webhooks, (6) Integrating HeyGen with Remotion for programmatic video, (7) Translating or dubbing existing videos.
 ---
 
-## When to use
+# HeyGen API
 
-Use this skill whenever you are dealing with HeyGen API code to obtain domain-specific knowledge for creating AI avatar videos, managing avatars, handling video generation workflows, and integrating with HeyGen's services.
+AI avatar video creation API for generating talking-head videos, explainers, and presentations.
 
-## How to use
+## Quick Reference
 
-Read individual rule files for detailed explanations and code examples:
+| Task | Read |
+|------|------|
+| Generate video from prompt (easy) | [video-agent.md](references/video-agent.md), [prompt-optimizer.md](references/prompt-optimizer.md) |
+| Generate video with precise control | [video-generation.md](references/video-generation.md), [avatars.md](references/avatars.md), [voices.md](references/voices.md) |
+| Check video status / get download URL | [video-status.md](references/video-status.md) |
+| Add captions or text overlays | [captions.md](references/captions.md), [text-overlays.md](references/text-overlays.md) |
+| Transparent video for compositing | [video-generation.md](references/video-generation.md) (WebM section) |
+| Real-time interactive avatar | [streaming-avatars.md](references/streaming-avatars.md) |
+| Translate/dub existing video | [video-translation.md](references/video-translation.md) |
+| Use with Remotion | [remotion-integration.md](references/remotion-integration.md) |
+
+## Reference Files
 
 ### Foundation
-- [rules/authentication.md](rules/authentication.md) - API key setup, X-Api-Key header, and authentication patterns
-- [rules/quota.md](rules/quota.md) - Credit system, usage limits, and checking remaining quota
-- [rules/video-status.md](rules/video-status.md) - Polling patterns, status types, and retrieving download URLs
-- [rules/assets.md](rules/assets.md) - Uploading images, videos, and audio for use in video generation
+- [references/authentication.md](references/authentication.md) - API key setup and X-Api-Key header
+- [references/quota.md](references/quota.md) - Credit system and usage limits
+- [references/video-status.md](references/video-status.md) - Polling patterns and download URLs
+- [references/assets.md](references/assets.md) - Uploading images, videos, audio
 
 ### Core Video Creation
-- [rules/avatars.md](rules/avatars.md) - Listing avatars, avatar styles, and avatar_id selection
-- [rules/voices.md](rules/voices.md) - Listing voices, locales, speed/pitch configuration
-- [rules/scripts.md](rules/scripts.md) - Writing scripts, pauses/breaks, pacing, and structure templates
-- [rules/video-generation.md](rules/video-generation.md) - POST /v2/video/generate workflow and multi-scene videos
-- [rules/video-agent.md](rules/video-agent.md) - One-shot prompt video generation with Video Agent API
-- [rules/dimensions.md](rules/dimensions.md) - Resolution options (720p/1080p) and aspect ratios
+- [references/avatars.md](references/avatars.md) - Listing avatars, styles, avatar_id selection
+- [references/voices.md](references/voices.md) - Listing voices, locales, speed/pitch
+- [references/scripts.md](references/scripts.md) - Writing scripts, pauses, pacing
+- [references/video-generation.md](references/video-generation.md) - POST /v2/video/generate and multi-scene videos
+- [references/video-agent.md](references/video-agent.md) - One-shot prompt video generation
+- [references/prompt-optimizer.md](references/prompt-optimizer.md) - Writing effective Video Agent prompts
+- [references/dimensions.md](references/dimensions.md) - Resolution and aspect ratios
 
 ### Video Customization
-- [rules/backgrounds.md](rules/backgrounds.md) - Solid colors, images, and video backgrounds
-- [rules/text-overlays.md](rules/text-overlays.md) - Adding text with fonts and positioning
-- [rules/captions.md](rules/captions.md) - Auto-generated captions and subtitle options
+- [references/backgrounds.md](references/backgrounds.md) - Solid colors, images, video backgrounds
+- [references/text-overlays.md](references/text-overlays.md) - Adding text with fonts and positioning
+- [references/captions.md](references/captions.md) - Auto-generated captions and subtitles
 
 ### Advanced Features
-- [rules/templates.md](rules/templates.md) - Template listing and variable replacement
-- [rules/video-translation.md](rules/video-translation.md) - Translating videos, quality/fast modes, and dubbing
-- [rules/streaming-avatars.md](rules/streaming-avatars.md) - Real-time interactive avatar sessions
-- [rules/photo-avatars.md](rules/photo-avatars.md) - Creating avatars from photos (talking photos)
-- [rules/webhooks.md](rules/webhooks.md) - Registering webhook endpoints and event types
+- [references/templates.md](references/templates.md) - Template listing and variable replacement
+- [references/video-translation.md](references/video-translation.md) - Translating videos and dubbing
+- [references/streaming-avatars.md](references/streaming-avatars.md) - Real-time interactive sessions
+- [references/photo-avatars.md](references/photo-avatars.md) - Creating avatars from photos
+- [references/webhooks.md](references/webhooks.md) - Webhook endpoints and events
 
 ### Integration
-- [rules/remotion-integration.md](rules/remotion-integration.md) - Using HeyGen avatar videos in Remotion compositions
+- [references/remotion-integration.md](references/remotion-integration.md) - Using HeyGen in Remotion compositions

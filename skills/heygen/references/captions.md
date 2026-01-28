@@ -1,8 +1,6 @@
 ---
 name: captions
 description: Auto-generated captions and subtitle options for HeyGen videos
-metadata:
-  tags: captions, subtitles, accessibility, srt
 ---
 
 # Video Captions

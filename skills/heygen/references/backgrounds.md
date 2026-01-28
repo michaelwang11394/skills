@@ -1,8 +1,6 @@
 ---
 name: backgrounds
 description: Solid colors, images, and video backgrounds for HeyGen videos
-metadata:
-  tags: backgrounds, color, image, video, customization
 ---
 
 # Video Backgrounds
