@@ -6,11 +6,14 @@ A knowledge base of best practices and API documentation for working with the He
 
 This skills package provides Claude Code with domain-specific knowledge about the HeyGen API, enabling it to:
 
-- Generate AI avatar videos
-- Work with avatars and voices
+- Generate AI avatar videos with precise control (v2 API)
+- Create videos from simple prompts using Video Agent
+- Optimize prompts for better Video Agent results
+- Work with avatars, voices, and backgrounds
 - Handle video translation and dubbing
-- Manage streaming avatars
+- Manage streaming avatars for real-time interaction
 - Create photo avatars (talking photos)
+- Integrate with Remotion for programmatic video composition
 - Configure webhooks and callbacks
 
 ## Installation
@@ -62,24 +65,40 @@ cp -r skills/skills/heygen .claude/skills/
 
 The skill should appear when Claude Code loads. You can verify by asking Claude about HeyGen APIs.
 
+## Quick Reference
+
+| Task | Reference Files |
+|------|-----------------|
+| Generate video from prompt (easy) | [prompt-optimizer.md](skills/heygen/references/prompt-optimizer.md) → [video-agent.md](skills/heygen/references/video-agent.md) |
+| Generate video with precise control | [video-generation.md](skills/heygen/references/video-generation.md), [avatars.md](skills/heygen/references/avatars.md), [voices.md](skills/heygen/references/voices.md) |
+| Check video status / get download URL | [video-status.md](skills/heygen/references/video-status.md) |
+| Add captions or text overlays | [captions.md](skills/heygen/references/captions.md), [text-overlays.md](skills/heygen/references/text-overlays.md) |
+| Transparent video for compositing | [video-generation.md](skills/heygen/references/video-generation.md) (WebM section) |
+| Real-time interactive avatar | [streaming-avatars.md](skills/heygen/references/streaming-avatars.md) |
+| Translate/dub existing video | [video-translation.md](skills/heygen/references/video-translation.md) |
+| Use with Remotion | [remotion-integration.md](skills/heygen/references/remotion-integration.md) |
+
 ## Contents
 
 ### Foundation
-- **authentication.md** - API key setup and authentication patterns
+- **authentication.md** - API key setup and X-Api-Key header
 - **quota.md** - Credit system and usage limits
-- **video-status.md** - Polling and status checking
-- **assets.md** - Asset upload and management
+- **video-status.md** - Polling patterns and download URLs
+- **assets.md** - Uploading images, videos, audio
 
 ### Core Video Creation
-- **avatars.md** - Avatar listing and selection
-- **voices.md** - Voice configuration and languages
+- **avatars.md** - Listing avatars, styles, avatar_id selection
+- **voices.md** - Voice configuration, locales, speed/pitch
+- **scripts.md** - Writing scripts, pauses, pacing
 - **video-generation.md** - Video creation workflow (v2 API)
+- **video-agent.md** - One-shot prompt-to-video generation
+- **prompt-optimizer.md** - Writing effective Video Agent prompts (scene-by-scene structure, timing, visual styles)
 - **dimensions.md** - Resolution and aspect ratios
 
 ### Video Customization
-- **backgrounds.md** - Colors, images, and video backgrounds
-- **text-overlays.md** - Adding text to videos
-- **captions.md** - Auto-generated captions
+- **backgrounds.md** - Solid colors, images, and video backgrounds
+- **text-overlays.md** - Adding text with fonts and positioning
+- **captions.md** - Auto-generated captions and subtitles
 
 ### Advanced Features
 - **templates.md** - Template-based video generation
@@ -88,13 +107,18 @@ The skill should appear when Claude Code loads. You can verify by asking Claude 
 - **photo-avatars.md** - Photo-based avatar creation
 - **webhooks.md** - Event notifications
 
+### Integration
+- **remotion-integration.md** - Using HeyGen in Remotion compositions
+
 ## Usage
 
-When working with HeyGen code, Claude Code will automatically reference these rule files to provide accurate, up-to-date guidance.
+When working with HeyGen code, Claude Code will automatically reference these files to provide accurate, up-to-date guidance.
 
 ### Example Prompts
 
 ```
+"Create a 60-second product demo video using the Video Agent API"
+
 "Help me generate a HeyGen video with a custom background"
 
 "How do I list available avatars in HeyGen?"
@@ -102,27 +126,48 @@ When working with HeyGen code, Claude Code will automatically reference these ru
 "Create a video translation workflow for Spanish and French"
 
 "Set up webhooks for video completion notifications"
+
+"Use the prompt optimizer to create a scene-by-scene script for my video"
 ```
+
+### Video Agent Workflow
+
+For quick video generation from a text prompt:
+
+1. Use the **prompt-optimizer.md** guidelines to structure your prompt with scenes, timing, and visual styles
+2. Call the Video Agent API endpoint (`POST /v1/video_agent/generate`)
+3. Poll for status using **video-status.md** patterns
+4. Download the completed video
 
 ## API Reference
 
-The rules are based on the HeyGen API documentation:
+The references are based on the HeyGen API documentation:
 - Base URL: `https://api.heygen.com`
 - Authentication: `X-Api-Key` header
-- API Versions: v1, v2, v3 (varies by endpoint)
+- API Versions: v1, v2 (varies by endpoint)
+
+### Key Endpoints
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /v1/video_agent/generate` | One-shot prompt-to-video (Video Agent) |
+| `POST /v2/video/generate` | Precise multi-scene video generation |
+| `GET /v1/video_status.get` | Check video generation status |
+| `GET /v2/avatars` | List available avatars |
+| `GET /v2/voices` | List available voices |
 
 ## Requirements
 
-- HeyGen API key (Enterprise tier or higher recommended)
+- HeyGen API key (get one at [HeyGen Developer Portal](https://app.heygen.com/settings/api))
 - Claude Code CLI
 
 ## Contributing
 
-To add or update rules:
+To add or update references:
 
-1. Edit the relevant `.md` file in `skills/heygen/rules/`
-2. Ensure YAML frontmatter includes: `name`, `description`, `metadata.tags`
-3. Include both curl and TypeScript/Python examples
+1. Edit the relevant `.md` file in `skills/heygen/references/`
+2. Update `skills/heygen/SKILL.md` if adding new files
+3. Include both curl and TypeScript/Python examples where applicable
 4. Test that the skill loads correctly
 
 ## License
@@ -133,4 +178,4 @@ MIT
 
 - [HeyGen API Documentation](https://docs.heygen.com)
 - [HeyGen Developer Portal](https://app.heygen.com/settings/api)
-- [Claude Code Documentation](https://claude.ai/code)
+- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code)
