@@ -9,8 +9,8 @@ All HeyGen API requests require authentication using an API key passed in the `X
 
 ## Getting Your API Key
 
-1. Log in to your HeyGen account at https://app.heygen.com
-2. Navigate to Settings > API
+1. Go to https://app.heygen.com/settings?from=&nav=API
+2. Log in if prompted
 3. Copy your API key
 
 ## Environment Setup
